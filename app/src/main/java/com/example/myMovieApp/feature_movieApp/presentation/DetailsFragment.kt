@@ -43,8 +43,12 @@ class DetailsFragment : Fragment(R.layout.details_fragment) {
         val binding = DetailsFragmentBinding.bind(view)
 
         viewModel.movieSeriesGenre.observe(viewLifecycleOwner, Observer {
-            model.genre = it.data?.genres?.get(0)?.name
-            model.videos = it.data?.videos?.results?.get(0)?.key
+            model.genre = it.data?.genres?.get(0)?.name ?: ""
+            if(it.data?.videos?.results?.isNotEmpty() == true) {
+                model.videos = it.data.videos.results[0].key
+            } else {
+                youTubePlayer.visibility = View.GONE
+            }
             genre.text = model.genre
         })
 
